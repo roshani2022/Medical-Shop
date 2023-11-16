@@ -1,0 +1,59 @@
+.orderform {
+    width: 90%;
+    max-width: 40rem;
+    margin: 2rem auto;
+    padding: 2rem;
+    margin-top: 8rem;
+  }
+
+  .form {
+    margin: 1rem 0;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .form label,
+  .form input {
+    display: block;
+  }
+
+  .form label {
+    font-weight: bold;
+    flex: 1;
+    color: #464646;
+    margin-bottom: 0.5rem;
+  }
+
+  .form input {
+    flex: 3;
+    font: inherit;
+    padding: 0.35rem 0.35rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .form input:focus {
+    outline: none;
+    border-color: #4f005f;
+    background: #f6dbfc;
+  }
+
+  .form select {
+    font-weight: bold;
+    border-radius: 6px;
+    display: inline;
+  }
+
+  .actions {
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .control {
+      align-items: center;
+      flex-direction: row;
+    }
+  }
+ 
