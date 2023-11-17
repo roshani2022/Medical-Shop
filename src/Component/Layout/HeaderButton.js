@@ -4,12 +4,16 @@ import CartIcon from "../Cart/CartIcon";
 import CartContext from "../Store/CartContext";
 
 const HeaderButton = (props) => {
-  const cartCtx = useContext(CartContext).items;
-
-    let q = 0;
+  const cartCtx = useContext(CartContext);
+ 
+  
+let q=0;
+   if(cartCtx.cartList.length>0){
     cartCtx.cartList.forEach((element) => {
-        q += element.quantity
-      });
+          q += element.quantity
+        });
+   }
+   
 
   return (
     <button onClick={props.onClick} className={classes.button}>

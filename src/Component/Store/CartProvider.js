@@ -5,21 +5,7 @@ const OrderProvider = (props) => {
   const [cartList, setCartList] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
-  const decreaseQuantityHandler = (orderId, quantity) => {
-    setCartList((prevOrders) => {
-      return prevOrders.map((order) => {
-        if (order.id === orderId) {
-          const newQuantity = Math.max(order[quantity] - 1, 0);
-          const quantityChange = order[quantity] > newQuantity ? 1 : 0;
-          return {
-            ...order,
-            quantity: order.quantity + quantityChange,
-          };
-        }
-        return order;
-      });
-    });
-  };
+  
 
   const cartHandler = (item, quantity) => {
     const newQuantity = Math.max(item[quantity] - 1, 0);
@@ -66,7 +52,7 @@ const OrderProvider = (props) => {
 
   const cartContext = {
     cartList: cartList,
-    decreaseQuantity: decreaseQuantityHandler,
+    
     clearCart: clearCart,
     addToCart: cartHandler,
     totalAmount: totalAmount,

@@ -8,7 +8,7 @@ const Cart = (props) => {
   
    ;
   
-    const hasItem = cartContext.items.length > 0;
+    const hasItem = cartContext.cartList.length > 0;
   
     const orderHandler = () => {
       cartContext.clearCart()

@@ -18,7 +18,7 @@ const App = (props) => {
   const hideCartHandler = () => {
     setShowCart(false);
   };
-
+   
   return (
     <CartProvider>
     <MedProvider>

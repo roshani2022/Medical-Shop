@@ -4,7 +4,7 @@ const MedProvider = (props) => {
     const [orders, setOrders] = useState([]);
     
     const addOrderHandler = (order) => {
-      order.quantity = 0;
+      
   
       setOrders((prevOrders) => [
         ...prevOrders,
@@ -15,9 +15,26 @@ const MedProvider = (props) => {
       ]);
     };
 
+    const decreaseQuantityHandler = (orderId, quantity) => {
+      setOrders((prevOrders) => {
+        return prevOrders.map((order) => {
+          if (order.id === orderId) {
+            const newQuantity = Math.max(order[quantity] - 1, 0);
+            return {
+              ...order,
+              [quantity]: newQuantity,
+            };
+          }
+          return order;
+        });
+      });
+    };
+    
+
     const medContext = {
         orders: orders,
         addOrder: addOrderHandler,
+        decreaseQuantityHandler:decreaseQuantityHandler,
 
       };
     
