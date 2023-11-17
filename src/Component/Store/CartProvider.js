@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import CartContext from "./CartContext";
 
-const OrderProvider = (props) => {
+const CartProvider = (props) => {
   const [cartList, setCartList] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
-  
-
   const cartHandler = (item, quantity) => {
     const newQuantity = Math.max(item[quantity] - 1, 0);
-    const quantityChange = item[quantity] > newQuantity ? 1 : 0;
-    const priceChange =item[quantity] > quantityChange ? Number(item.price) : 0;
+    const quantityChange = item[quantity] - newQuantity;
+    const priceChange = quantityChange * Number(item.price);
+
     const existingItem = cartList.find((cartItem) => cartItem.id === item.id);
 
     if (existingItem) {
@@ -18,8 +17,8 @@ const OrderProvider = (props) => {
         if (cartItem.id === item.id) {
           return {
             ...cartItem,
-            price: Number(cartItem.price) + Number(priceChange),
-            [quantity]: Number(cartItem[quantity]) + Number(quantityChange),
+            price: Number(cartItem.price) + priceChange,
+            quantity: cartItem.quantity + quantityChange,
           };
         }
         return cartItem;
@@ -30,12 +29,12 @@ const OrderProvider = (props) => {
         ...prevCartList,
         {
           ...item,
-
           quantity: 1,
         },
       ]);
     }
-    setTotalAmount((prevTotal) => prevTotal + Number(priceChange));
+
+    setTotalAmount((prevTotal) => prevTotal + priceChange);
   };
 
   const resetOrderQuantities = () => {
@@ -52,7 +51,6 @@ const OrderProvider = (props) => {
 
   const cartContext = {
     cartList: cartList,
-    
     clearCart: clearCart,
     addToCart: cartHandler,
     totalAmount: totalAmount,
@@ -64,4 +62,6 @@ const OrderProvider = (props) => {
     </CartContext.Provider>
   );
 };
-export default OrderProvider;
+
+export default CartProvider;
+

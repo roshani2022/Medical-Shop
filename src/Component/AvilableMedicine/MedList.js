@@ -18,23 +18,17 @@ const MedList = () => {
     return orders.map((order) => (
       <li key={order.id}>
         {order.name} - {order.description} -{order.price} {"  "}
-        {/* <button
-          type="button"
-          onClick={() => handleQuantityClick(order,"quantity")}
-          disabled={order.quantity === 0}
-        >
-         
-          {order.quantity === 0 ? 'Out of Stock' : `Add to Cart (${order.quantity})`}
-        </button> */}
         <button
           type="button"
           onClick={() => handleQuantityClick(order, "quantity")}
           disabled={order.quantity === 0}
         >
-          {order.quantity === 0
-            ? "Out of Stock"
-            : `Add to Cart (${order.quantity})`}
+          Add to Cart{order.quantity}
         </button>
+
+        {order.quantity===0 && (
+          <span style={{color:'red', marginLeft:'10px'}}>Sorry Out of Stock!!</span>
+        )}
       </li>
     ));
   };
