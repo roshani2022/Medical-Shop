@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CartContext from "./CartContext";
+import axios from "axios";
 
 const CartProvider = (props) => {
   const [cartList, setCartList] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
-  const cartHandler = (item, quantity) => {
+  const url = "https://crudcrud.com/api/5ccf57f3d07a4329af4c84eab0d973f6/cart";
+
+  const cartHandler = async (item, quantity) => {
     const newQuantity = Math.max(item[quantity] - 1, 0);
     const quantityChange = item[quantity] - newQuantity;
     const priceChange = quantityChange * Number(item.price);
@@ -23,29 +26,61 @@ const CartProvider = (props) => {
         }
         return cartItem;
       });
-      setCartList(updatedItems);
+      // setCartList(updatedItems);
+      setCartList(updatedItems, () => {
+        setTotalAmount((prevTotal) => prevTotal + priceChange);
+      });
     } else {
-      setCartList((prevCartList) => [
-        ...prevCartList,
-        {
-          ...item,
-          quantity: 1,
-        },
-      ]);
+      try {
+        const res = await axios.post(url, item);
+        setCartList(
+          (prevCartList) => [
+            ...prevCartList,
+            {
+              ...item,
+              quantity: 1,
+            },
+            res.data,
+          ],
+          () => {
+            setTotalAmount((prevTotal) => prevTotal + priceChange);
+          }
+        );
+      } catch (error) {
+        console.error("Error making POST request:", error);
+      }
     }
-
-    setTotalAmount((prevTotal) => prevTotal + priceChange);
   };
 
-  const resetOrderQuantities = () => {
+  useEffect(() => {
+    const getCartItems = async () => {
+      try {
+        const response = await axios.get(url);
+
+        setCartList(response.data || []);
+      } catch (err) {
+        console.log("Error fetching cart items:", err);
+      }
+    };
+    getCartItems();
+  }, []);
+
+  const resetOrderQuantities = async () => {
     setCartList((prevOrders) =>
       prevOrders.map((order) => ({ ...order, quantity: 0 }))
     );
   };
 
-  const clearCart = () => {
+  const clearCart = async () => {
+    try {
+      // Delete all orders in the cart
+      const response = await axios.delete(url);
+      console.log("Delete response:", response.data)
+      console.log("Cart cleared successfully.");
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+    }
     setCartList([]);
-    setTotalAmount(0);
     resetOrderQuantities();
   };
 
@@ -64,4 +99,3 @@ const CartProvider = (props) => {
 };
 
 export default CartProvider;
-
